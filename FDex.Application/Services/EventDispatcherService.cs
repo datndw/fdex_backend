@@ -103,8 +103,7 @@ namespace FDex.Application.Services
                 TokenOut = decodedSwap.Event.TokenOut,
                 AmountIn = decodedSwap.Event.AmountIn,
                 AmountOut = decodedSwap.Event.AmountOut,
-                Fee = decodedSwap.Event.Fee,
-                MarkPrice = decodedSwap.Event.MarkPrice
+                Fee = decodedSwap.Event.Fee * decodedSwap.Event.MarkPrice
             };
             Swap swap = _mapper.Map<Swap>(swapDTOAdd);
             await _unitOfWork.SwapRepository.AddAsync(swap);
