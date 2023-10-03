@@ -2,7 +2,7 @@
 using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
-namespace FDex.Application.DTOs.AddLiquidity
+namespace FDex.Application.DTOs.Liquidity
 {
     [Event("AddLiquidity")]
     public class AddLiquidityDTOBase : IEventDTO

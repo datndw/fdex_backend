@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FDex.Persistence.Repositories
 {
-	public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
 		private readonly FDexDbContext _context;
 
@@ -28,6 +28,16 @@ namespace FDex.Persistence.Repositories
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
+        }
+
+        public void Remove(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
+
+        public void Update(T entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

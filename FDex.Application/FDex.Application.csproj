@@ -25,7 +25,6 @@
     <None Remove="Features\Swaps\Handlers\Commands\" />
     <None Remove="Features\Swaps\Requests\Commands\" />
     <None Remove="Services\" />
-    <None Remove="DTOs\AddLiquidity\" />
     <None Remove="Features\DashboardItems\" />
     <None Remove="Features\DashboardItems\Requests\" />
     <None Remove="Features\DashboardItems\Handlers\" />
@@ -33,6 +32,16 @@
     <None Remove="Features\DashboardItems\Requests\Queries\" />
     <None Remove="Features\DashboardItems\Requests\Commands\" />
     <None Remove="Features\DashboardItems\Handlers\Queries\" />
+    <None Remove="DTOs\Reporter\" />
+    <None Remove="DTOs\Liquidity\" />
+    <None Remove="Enumerations\" />
+    <None Remove="Features\Reporters\" />
+    <None Remove="Features\Reporters\Handlers\" />
+    <None Remove="Features\Reporters\Requests\" />
+    <None Remove="Features\Reporters\Handlers\Commands\" />
+    <None Remove="Features\Reporters\Handlers\Queries\" />
+    <None Remove="Features\Reporters\Requests\Commands\" />
+    <None Remove="Features\Reporters\Requests\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
@@ -53,7 +62,6 @@
     <Folder Include="Features\Swaps\Handlers\Commands\" />
     <Folder Include="Features\Swaps\Requests\Commands\" />
     <Folder Include="Services\" />
-    <Folder Include="DTOs\AddLiquidity\" />
     <Folder Include="Features\DashboardItems\" />
     <Folder Include="Features\DashboardItems\Requests\" />
     <Folder Include="Features\DashboardItems\Handlers\" />
@@ -61,6 +69,16 @@
     <Folder Include="Features\DashboardItems\Requests\Queries\" />
     <Folder Include="Features\DashboardItems\Requests\Commands\" />
     <Folder Include="Features\DashboardItems\Handlers\Queries\" />
+    <Folder Include="DTOs\Reporter\" />
+    <Folder Include="DTOs\Liquidity\" />
+    <Folder Include="Enumerations\" />
+    <Folder Include="Features\Reporters\" />
+    <Folder Include="Features\Reporters\Handlers\" />
+    <Folder Include="Features\Reporters\Requests\" />
+    <Folder Include="Features\Reporters\Handlers\Commands\" />
+    <Folder Include="Features\Reporters\Handlers\Queries\" />
+    <Folder Include="Features\Reporters\Requests\Commands\" />
+    <Folder Include="Features\Reporters\Requests\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FDex.Domain\FDex.Domain.csproj" />

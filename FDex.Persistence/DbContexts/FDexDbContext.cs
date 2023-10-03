@@ -19,9 +19,17 @@ namespace FDex.Persistence.DbContexts
             modelBuilder.Entity<Swap>(entity =>
             {
                 entity.HasKey(u => u.TxnHash);
+                entity.HasOne<User>(s => s.User)
+                .WithMany(u => u.Swaps)
+                .HasForeignKey(u => u.Wallet);
             });
 
             modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(u => u.Wallet);
+            });
+
+            modelBuilder.Entity<Reporter>(entity =>
             {
                 entity.HasKey(u => u.Wallet);
             });
@@ -29,6 +37,7 @@ namespace FDex.Persistence.DbContexts
 
         public DbSet<Swap> Swaps { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Reporter> Reporters { get; set; }
     }
 }
 

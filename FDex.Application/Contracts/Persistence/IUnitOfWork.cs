@@ -5,6 +5,7 @@ namespace FDex.Application.Contracts.Persistence
 	{
         ISwapRepository SwapRepository { get; }
         IUserRepository UserRepository { get; }
+        IReporterRepository ReporterRepository { get; }
 
         Task Save();
     }

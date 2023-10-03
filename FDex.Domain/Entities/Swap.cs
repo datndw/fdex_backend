@@ -13,5 +13,7 @@ namespace FDex.Domain.Entities
         public string AmountOut { get; set; }
         public string Fee { get; set; }
         public DateTime Time { get; set; }
+
+        public User User { get; set; }
     }
 }

@@ -13,6 +13,7 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddHealthChecks();
         builder.Services.AddHttpContextAccessor();
         builder.Services.ConfigurePersistenceServices(builder.Configuration);
         builder.Services.ConfigureApplicationServices();
@@ -21,6 +22,10 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddHostedService<EventDispatcherService>();
+        builder.Services.Configure<HostOptions>(options =>
+        {
+            options.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+        });
         builder.Services.AddCors(c =>
         {
             c.AddPolicy("CorsPolicy",
@@ -50,6 +55,8 @@ internal class Program
         app.UseCors("CorsPolicy");
 
         app.MapControllers();
+
+        app.MapHealthChecks("/healthz");
 
         app.Run();
     }
