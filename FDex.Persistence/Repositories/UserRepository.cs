@@ -28,6 +28,7 @@ namespace FDex.Persistence.Repositories
             BigInteger totalUserCount = totalUser.Count();
             BigInteger totalUserCountChange = await totalUser.Where(u => u.CreatedDate.Date > DateTime.Now.AddDays(-1).Date).CountAsync();
             List<Swap> swaps = _context.Swaps.ToList();
+            List<AddLiquidity> addLiquidities = _context.AddLiquidities.ToList();
             foreach (var swap in swaps)
             {
                 accuredFees += BigInteger.Parse(swap.Fee);
@@ -36,6 +37,14 @@ namespace FDex.Persistence.Repositories
                     accuredFeesChange += BigInteger.Parse(swap.Fee);
                 }
             }
+            foreach(var al in addLiquidities)
+            {
+                accuredFees += BigInteger.Parse(al.Fee);
+                if (al.DateAdded.Date > DateTime.Now.AddDays(-1).Date)
+                {
+                    accuredFeesChange += BigInteger.Parse(al.Fee);
+                }
+            }    
             var dashboardItemDatas = new
             {
                 TotalUserCount = totalUserCount.ToString(),

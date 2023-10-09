@@ -1,6 +1,7 @@
 ﻿using System;
 using FDex.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace FDex.Persistence.DbContexts
 {
@@ -33,11 +34,17 @@ namespace FDex.Persistence.DbContexts
             {
                 entity.HasKey(u => u.Wallet);
             });
+
+            modelBuilder.Entity<AddLiquidity>(entity =>
+            {
+                entity.HasKey(u => u.TxnHash);
+            });
         }
 
         public DbSet<Swap> Swaps { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Reporter> Reporters { get; set; }
+        public DbSet<AddLiquidity> AddLiquidities { get; set; }
     }
 }
 

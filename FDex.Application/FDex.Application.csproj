@@ -42,6 +42,7 @@
     <None Remove="Features\Reporters\Handlers\Queries\" />
     <None Remove="Features\Reporters\Requests\Commands\" />
     <None Remove="Features\Reporters\Requests\Queries\" />
+    <None Remove="Constants\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
@@ -79,6 +80,7 @@
     <Folder Include="Features\Reporters\Handlers\Queries\" />
     <Folder Include="Features\Reporters\Requests\Commands\" />
     <Folder Include="Features\Reporters\Requests\Queries\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FDex.Domain\FDex.Domain.csproj" />

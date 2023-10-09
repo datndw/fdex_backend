@@ -1,0 +1,13 @@
+﻿version: "3.9"
+services:
+  fdex.api:
+    image: fdex.api
+    build:
+      context: .
+      dockerfile: FDex.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Logging__LogLevel__Default=Information
+    ports:
+      - 5000:80
+   

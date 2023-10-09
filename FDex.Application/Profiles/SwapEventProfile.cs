@@ -18,7 +18,7 @@ namespace FDex.Application.Profiles
                 .ForMember(dest => dest.AmountIn, opt => opt.MapFrom(src => src.AmountIn.ToString()))
                 .ForMember(dest => dest.AmountOut, opt => opt.MapFrom(src => src.AmountOut.ToString()))
                 .ForMember(dest => dest.Fee, opt => opt.MapFrom(src => src.Fee.ToString()))
-                .ForMember(dest => dest.Time, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time))
                 .ReverseMap()
                 .ForMember(dest => dest.AmountIn, opt => opt.MapFrom(src => BigInteger.Parse(src.AmountIn)))
                 .ForMember(dest => dest.AmountOut, opt => opt.MapFrom(src => BigInteger.Parse(src.AmountOut)))
