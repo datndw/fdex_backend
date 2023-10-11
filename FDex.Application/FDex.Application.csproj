@@ -43,6 +43,14 @@
     <None Remove="Features\Reporters\Requests\Commands\" />
     <None Remove="Features\Reporters\Requests\Queries\" />
     <None Remove="Constants\" />
+    <None Remove="Tasks\" />
+    <None Remove="Features\Users\" />
+    <None Remove="Features\Users\Requests\" />
+    <None Remove="Features\Users\Handlers\" />
+    <None Remove="Features\Users\Requests\Commands\" />
+    <None Remove="Features\Users\Requests\Queries\" />
+    <None Remove="Features\Users\Handlers\Commands\" />
+    <None Remove="Features\Users\Handlers\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
@@ -81,6 +89,14 @@
     <Folder Include="Features\Reporters\Requests\Commands\" />
     <Folder Include="Features\Reporters\Requests\Queries\" />
     <Folder Include="Constants\" />
+    <Folder Include="Tasks\" />
+    <Folder Include="Features\Users\" />
+    <Folder Include="Features\Users\Requests\" />
+    <Folder Include="Features\Users\Handlers\" />
+    <Folder Include="Features\Users\Requests\Commands\" />
+    <Folder Include="Features\Users\Requests\Queries\" />
+    <Folder Include="Features\Users\Handlers\Commands\" />
+    <Folder Include="Features\Users\Handlers\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FDex.Domain\FDex.Domain.csproj" />

@@ -21,13 +21,16 @@ namespace FDex.Persistence.DbContexts
             {
                 entity.HasKey(u => u.TxnHash);
                 entity.HasOne<User>(s => s.User)
-                .WithMany(u => u.Swaps)
-                .HasForeignKey(u => u.Wallet);
+                    .WithMany(u => u.Swaps)
+                    .HasForeignKey(u => u.Wallet);
             });
 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(u => u.Wallet);
+                entity.HasMany(u => u.ReferredUsers)
+                    .WithOne()
+                    .HasForeignKey(u => u.ReferredUserOf);
             });
 
             modelBuilder.Entity<Reporter>(entity =>

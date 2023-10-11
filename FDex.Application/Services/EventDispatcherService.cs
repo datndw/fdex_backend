@@ -136,7 +136,7 @@ namespace FDex.Application.Services
             };
             AddLiquidity addLiquidity = _mapper.Map<AddLiquidity>(addLiquidityDTOAdd);
             await _unitOfWork.AddLiquidityRepository.AddAsync(addLiquidity);
-            await _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
 
         private string HandleWebsocketString()
@@ -151,20 +151,31 @@ namespace FDex.Application.Services
             switch (reporterEvent)
             {
                 case ReporterEventType.Added:
-                    await _unitOfWork.ReporterRepository.AddAsync(new Reporter { Wallet = wallet });
+                    var foundReporterAdded = await _unitOfWork.ReporterRepository.FindAsync(wallet);
+                    if (foundReporterAdded == null)
+                    {
+                        await _unitOfWork.ReporterRepository.AddAsync(new Reporter { Wallet = wallet, ReportCount = 0 });
+                    }
                     break;
                 case ReporterEventType.Removed:
-                    Reporter removingReporter = await _unitOfWork.ReporterRepository.FindAsync(wallet);
-                    _unitOfWork.ReporterRepository.Remove(removingReporter);
+                    var foundReporterRemoved = await _unitOfWork.ReporterRepository.FindAsync(wallet);
+                    if (foundReporterRemoved != null)
+                    {
+                        _unitOfWork.ReporterRepository.Remove(foundReporterRemoved);
+                    }
                     break;
                 case ReporterEventType.Posted:
-                    Reporter postingReporter = await _unitOfWork.ReporterRepository.FindAsync(wallet);
-                    postingReporter.ReportCount += 1;
-                    postingReporter.LastReportedDate = DateTime.Now;
-                    _unitOfWork.ReporterRepository.Update(postingReporter);
+                    var foundReporterPosted = await _unitOfWork.ReporterRepository.FindAsync(wallet);
+                    if (foundReporterPosted != null)
+                    {
+                        Reporter postingReporter = await _unitOfWork.ReporterRepository.FindAsync(wallet);
+                        postingReporter.ReportCount += 1;
+                        postingReporter.LastReportedDate = DateTime.Now;
+                        _unitOfWork.ReporterRepository.Update(postingReporter);
+                    }
                     break;
             }
-            await _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
 
         private async Task StoreUserAsync(string wallet)
@@ -178,7 +189,7 @@ namespace FDex.Application.Services
                     CreatedDate = DateTime.Now
                 };
                 await _unitOfWork.UserRepository.AddAsync(user);
-                await _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
             }
         }
 
@@ -197,7 +208,7 @@ namespace FDex.Application.Services
             };
             Swap swap = _mapper.Map<Swap>(swapDTOAdd);
             await _unitOfWork.SwapRepository.AddAsync(swap);
-            await _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
         }
     }
 }
