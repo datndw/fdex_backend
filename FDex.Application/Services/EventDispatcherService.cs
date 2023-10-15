@@ -5,7 +5,6 @@ using FDex.Application.DTOs.Liquidity;
 using FDex.Application.DTOs.Reporter;
 using FDex.Application.DTOs.Swap;
 using FDex.Application.DTOs.TradingPosition;
-using FDex.Application.Enumerations;
 using FDex.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -46,11 +45,9 @@ namespace FDex.Application.Services
             while (!stoppingToken.IsCancellationRequested)
             {
                 await using var scope = _serviceProvider.CreateAsyncScope();
-                var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                 try
                 {
                     StreamingWebSocketClient client = new(HandleWebsocketString());
-
                     NewFilterInput swapFilterInput = Event<SwapDTO>.GetEventABI().CreateFilterInput();
                     NewFilterInput addLiquidityFilterInput = Event<AddLiquidityDTO>.GetEventABI().CreateFilterInput();
                     NewFilterInput reporterAddedFilterInput = Event<ReporterAddedDTO>.GetEventABI().CreateFilterInput();
@@ -78,6 +75,7 @@ namespace FDex.Application.Services
                         if (decodedSwap != null)
                         {
                             Console.WriteLine("[DEV-INF] Decoding a swap event ...");
+                            var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                             SwapDTOAdd swapDTOAdd = new()
                             {
                                 TxnHash = decodedSwap.Log.TransactionHash,
@@ -102,6 +100,7 @@ namespace FDex.Application.Services
                                 await _unitOfWork.UserRepository.AddAsync(user);
                             }
                             await _unitOfWork.SaveAsync();
+                            _unitOfWork.Dispose();
                         }
                         else
                         {
@@ -112,6 +111,7 @@ namespace FDex.Application.Services
                     reporterAddedSubscription.GetSubscriptionDataResponsesAsObservable().Subscribe(async log =>
                     {
                         Console.WriteLine("[DEV-INF] Decoding a reporter added event ...");
+                        var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                         var decodedReporterAdded = Event<ReporterAddedDTO>.DecodeEvent(log);
                         var foundReporterAdded = await _unitOfWork.ReporterRepository.FindAsync(decodedReporterAdded.Event.Wallet);
                         if (foundReporterAdded == null)
@@ -119,11 +119,13 @@ namespace FDex.Application.Services
                             await _unitOfWork.ReporterRepository.AddAsync(new Reporter { Wallet = decodedReporterAdded.Event.Wallet, ReportCount = 0 });
                         }
                         await _unitOfWork.SaveAsync();
+                        _unitOfWork.Dispose();
                     });
 
                     reporterRemovedSubscription.GetSubscriptionDataResponsesAsObservable().Subscribe(async log =>
                     {
                         Console.WriteLine("[DEV-INF] Decoding a reporter removed event ...");
+                        var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                         var decodedReporterRemoved = Event<ReporterRemovedDTO>.DecodeEvent(log);
                         var foundReporterRemoved = await _unitOfWork.ReporterRepository.FindAsync(decodedReporterRemoved.Event.Wallet);
                         if (foundReporterRemoved != null)
@@ -131,11 +133,13 @@ namespace FDex.Application.Services
                             _unitOfWork.ReporterRepository.Remove(foundReporterRemoved);
                         }
                         await _unitOfWork.SaveAsync();
+                        _unitOfWork.Dispose();
                     });
 
                     reporterPostedSubscription.GetSubscriptionDataResponsesAsObservable().Subscribe(async log =>
                     {
                         Console.WriteLine("[DEV-INF] Decoding a reporter posted event ...");
+                        var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                         var decodedReporterPosted = Event<ReporterPostedDTO>.DecodeEvent(log);
                         var foundReporterPosted = await _unitOfWork.ReporterRepository.FindAsync(decodedReporterPosted.Event.Wallet);
                         if (foundReporterPosted != null)
@@ -146,10 +150,12 @@ namespace FDex.Application.Services
                             _unitOfWork.ReporterRepository.Update(postingReporter);
                         }
                         await _unitOfWork.SaveAsync();
+                        _unitOfWork.Dispose();
                     });
 
                     addLiquiditySubscription.GetSubscriptionDataResponsesAsObservable().Subscribe(async log =>
                     {
+                        var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                         var decodedAddLiquidity = Event<AddLiquidityDTO>.DecodeEvent(log);
                         if (decodedAddLiquidity != null)
                         {
@@ -177,6 +183,7 @@ namespace FDex.Application.Services
                             AddLiquidity addLiquidity = _mapper.Map<AddLiquidity>(addLiquidityDTOAdd);
                             await _unitOfWork.AddLiquidityRepository.AddAsync(addLiquidity);
                             await _unitOfWork.SaveAsync();
+                            _unitOfWork.Dispose();
                         }
                         else
                         {

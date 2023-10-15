@@ -4,9 +4,10 @@ using FDex.Persistence.DbContexts;
 
 namespace FDex.Persistence.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly FDexDbContext _context;
+        private bool _disposed;
         private ISwapRepository _swapRepository;
         private IUserRepository _userRepository;
         private IReporterRepository _reporterRepository;
@@ -24,9 +25,22 @@ namespace FDex.Persistence.Repositories
         public IAddLiquidityRepository AddLiquidityRepository => _addLiquidityRepository ??= new AddLiquidityRepository(_context);
         public IPositionRepository PositionRepository => _positionRepository ??= new PositionRepository(_context);
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            _disposed = true;
+        }
+
         public void Dispose()
         {
             _context.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 

@@ -41,7 +41,7 @@ namespace FDex.Application.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             await using var scope = _serviceProvider.CreateAsyncScope();
-            var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            //var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
             var latestBlockNumber = await _web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
             var poolAddress = "0x9Fca52B0E21AdfF52563D179b1593149109593b5";
             var oracleAddress = "0x1E16D408a6ae4E2a867cd33F15cb7E17441139c1";
@@ -85,6 +85,7 @@ namespace FDex.Application.Services
 
                 foreach (var log in swapEvents)
                 {
+                    var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                     var foundUser = await _unitOfWork.UserRepository.FindAsync(log.Event.Wallet);
                     if (foundUser == null)
                     {
@@ -113,10 +114,12 @@ namespace FDex.Application.Services
                         await _unitOfWork.SwapRepository.AddAsync(swap);
                     }
                     await _unitOfWork.SaveAsync();
+                    _unitOfWork.Dispose();
                 }
 
                 foreach (var log in addLiquidityEvents)
                 {
+                    var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                     var foundUser = await _unitOfWork.UserRepository.FindAsync(log.Event.Wallet);
                     if (foundUser == null)
                     {
@@ -143,30 +146,36 @@ namespace FDex.Application.Services
                         await _unitOfWork.AddLiquidityRepository.AddAsync(addLiquidity);
                     }
                     await _unitOfWork.SaveAsync();
+                    _unitOfWork.Dispose();
                 }
 
                 foreach (var log in reporterAddedEvents)
                 {
+                    var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                     var foundReporterAdded = await _unitOfWork.ReporterRepository.FindAsync(log.Event.Wallet);
                     if (foundReporterAdded == null)
                     {
                         await _unitOfWork.ReporterRepository.AddAsync(new Reporter { Wallet = log.Event.Wallet, ReportCount = 0 });
                     }
                     await _unitOfWork.SaveAsync();
+                    _unitOfWork.Dispose();
                 }
 
                 foreach (var log in reporterRemovedEvents)
                 {
+                    var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                     var foundReporterRemoved = await _unitOfWork.ReporterRepository.FindAsync(log.Event.Wallet);
                     if (foundReporterRemoved != null)
                     {
                         _unitOfWork.ReporterRepository.Remove(foundReporterRemoved);
                     }
                     await _unitOfWork.SaveAsync();
+                    _unitOfWork.Dispose();
                 }
 
                 foreach (var log in reporterPostedEvents)
                 {
+                    var _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                     var foundReporterPosted = await _unitOfWork.ReporterRepository.FindAsync(log.Event.Wallet);
                     if (foundReporterPosted != null)
                     {
@@ -176,6 +185,7 @@ namespace FDex.Application.Services
                         _unitOfWork.ReporterRepository.Update(postingReporter);
                     }
                     await _unitOfWork.SaveAsync();
+                    _unitOfWork.Dispose();
                 }
 
                 foreach(var log in increasePositionEvents)

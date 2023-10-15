@@ -17,6 +17,8 @@ namespace FDex.Domain.Entities
         public string FeeValue { get; set; }
         public DateTime OpenTime { get; set; }
         public DateTime CloseTime { get; set; }
+
+        public User User { get; set; }
     }
 }
 

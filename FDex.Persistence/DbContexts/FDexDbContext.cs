@@ -46,6 +46,9 @@ namespace FDex.Persistence.DbContexts
             modelBuilder.Entity<Position>(entity =>
             {
                 entity.HasKey(u => u.Key);
+                entity.HasOne<User>(s => s.User)
+                    .WithMany(u => u.Positions)
+                    .HasForeignKey(u => u.Wallet);
             });
         }
 

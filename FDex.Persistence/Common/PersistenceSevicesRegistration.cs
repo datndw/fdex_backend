@@ -29,10 +29,14 @@ namespace FDex.Persistence.Common
                     });
                 });
             },
-            ServiceLifetime.Scoped);
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ISwapRepository, SwapRepository>();
+            ServiceLifetime.Transient);
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ISwapRepository, SwapRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IAddLiquidityRepository, AddLiquidityRepository>();
+            services.AddTransient<IPositionRepository, PositionRepository>();
+
             return services;
         }
     }

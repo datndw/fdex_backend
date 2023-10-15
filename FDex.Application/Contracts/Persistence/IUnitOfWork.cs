@@ -10,6 +10,7 @@ namespace FDex.Application.Contracts.Persistence
         IPositionRepository PositionRepository { get; }
 
         Task SaveAsync();
+        void Dispose();
     }
 }
 
