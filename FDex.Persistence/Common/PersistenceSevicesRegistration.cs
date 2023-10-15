@@ -29,9 +29,9 @@ namespace FDex.Persistence.Common
                     });
                 });
             },
-            ServiceLifetime.Singleton);
+            ServiceLifetime.Scoped);
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISwapRepository, SwapRepository>();
             return services;
         }

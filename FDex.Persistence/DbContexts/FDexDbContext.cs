@@ -42,12 +42,18 @@ namespace FDex.Persistence.DbContexts
             {
                 entity.HasKey(u => u.TxnHash);
             });
+
+            modelBuilder.Entity<Position>(entity =>
+            {
+                entity.HasKey(u => u.Key);
+            });
         }
 
         public DbSet<Swap> Swaps { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Reporter> Reporters { get; set; }
         public DbSet<AddLiquidity> AddLiquidities { get; set; }
+        public DbSet<Position> Positions { get; set; }
     }
 }
 

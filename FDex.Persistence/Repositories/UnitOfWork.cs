@@ -11,6 +11,7 @@ namespace FDex.Persistence.Repositories
         private IUserRepository _userRepository;
         private IReporterRepository _reporterRepository;
         private IAddLiquidityRepository _addLiquidityRepository;
+        private IPositionRepository _positionRepository;
 
         public UnitOfWork(FDexDbContext context)
         {
@@ -21,6 +22,7 @@ namespace FDex.Persistence.Repositories
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
         public IReporterRepository ReporterRepository => _reporterRepository ??= new ReporterRepository(_context);
         public IAddLiquidityRepository AddLiquidityRepository => _addLiquidityRepository ??= new AddLiquidityRepository(_context);
+        public IPositionRepository PositionRepository => _positionRepository ??= new PositionRepository(_context);
 
         public void Dispose()
         {

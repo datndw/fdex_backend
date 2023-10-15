@@ -1,11 +1,10 @@
 ﻿using System;
 namespace FDex.Application.Enumerations
 {
-	public enum ReporterEventType
+	public enum Side
 	{
-		Added,
-		Removed,
-		Posted
+		Long,
+		Short
 	}
 }
 

@@ -25,7 +25,7 @@ namespace FDex.Application.DTOs.Swap
         [Parameter("uint256", "fee", 6, false)]
         public virtual BigInteger Fee { get; set; }
 
-        [Parameter("uint256", "markPrice", 6, false)]
+        [Parameter("uint256", "markPrice", 7, false)]
         public virtual BigInteger MarkPrice { get; set; }
     }
 }
